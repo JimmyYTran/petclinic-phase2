@@ -2,9 +2,11 @@ package com.example.petclinic.service;
 
 import com.example.petclinic.model.Vet;
 import com.example.petclinic.repository.VetRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class VetService implements BasicService<Vet> {
 
     private VetRepository vetRepository;

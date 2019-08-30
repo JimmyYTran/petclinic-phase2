@@ -87,8 +87,7 @@ public class Owner implements Modifiable {
 
         pets.add(pet);
         if(updateRelationship) {
-            // TODO uncomment line below
-            //pet.addOwner(this, false);
+            pet.addOwner(this, false);
         }
     }
 
@@ -102,8 +101,7 @@ public class Owner implements Modifiable {
 
         pets.remove(pet);
         if (updateRelationship) {
-            // TODO uncomment line below
-            //pet.removeOwner(this, false);
+            pet.removeOwner(this, false);
         }
     }
 

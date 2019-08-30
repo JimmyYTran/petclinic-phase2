@@ -2,9 +2,11 @@ package com.example.petclinic.controller;
 
 import com.example.petclinic.model.Pet;
 import com.example.petclinic.service.PetService;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+@Controller
 public class PetController implements BasicController<Pet> {
 
     private PetService petService;

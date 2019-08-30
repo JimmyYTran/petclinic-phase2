@@ -1,9 +1,11 @@
 package com.example.petclinic.repository;
 
 import com.example.petclinic.model.Visit;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class VisitRepository extends BasicRepository implements CrudRepository<Visit> {
 
     @Override

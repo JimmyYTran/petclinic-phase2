@@ -1,5 +1,10 @@
 package com.example.petclinic;
 
+import com.example.petclinic.config.ExitCodeConfiguration;
+import org.springframework.boot.ExitCodeGenerator;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
 import com.example.petclinic.controller.OwnerController;
 import com.example.petclinic.controller.PetController;
 import com.example.petclinic.controller.VetController;
@@ -13,22 +18,34 @@ import com.example.petclinic.service.OwnerService;
 import com.example.petclinic.service.PetService;
 import com.example.petclinic.service.VetService;
 import com.example.petclinic.service.VisitService;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SpringBootApplication
 public class PetClinicDriver {
+
+    private static ConfigurableApplicationContext context;
+
+    private static OwnerController ownerController;
+    private static PetController petController;
+    private static VisitController visitController;
+    private static VetController vetController;
 
     public static void main(String[] args) {
 
-        testApp();
+        // Need reference to Spring IoC container (its context)
+        context = SpringApplication.run(PetClinicDriver.class, args);
 
+        testApp();
     }
 
     private static void testApp() {
 
         // Owner dependency injection (DI) setup
+        /*
         OwnerRepository ownerRepository = new OwnerRepository();
         OwnerService ownerService = new OwnerService(ownerRepository);
         OwnerController ownerController = new OwnerController(ownerService);
@@ -44,6 +61,11 @@ public class PetClinicDriver {
         VetRepository vetRepository = new VetRepository();
         VetService vetService = new VetService(vetRepository);
         VetController vetController = new VetController(vetService);
+        */
+        ownerController = (OwnerController)context.getBean("ownerController");
+        petController = (PetController)context.getBean("petController");
+        visitController = (VisitController)context.getBean("visitController");
+        vetController = (VetController)context.getBean("vetController");
 
 
         // ***** Owner testing *****
@@ -102,9 +124,28 @@ public class PetClinicDriver {
 
         display(vetController.getAll());
 
+        // Try to add/remove a pet from owner4
+        owner4.getPets().stream()
+                .map(s -> s.getName())
+                .forEach(System.out::println);
 
+        owner4.removePet(pet1);
+        owner4.addPet(pet3);
+        owner4.addPet(pet4);
 
+        System.out.println("\nAfter pet addition/removal: \n");
+        owner4.getPets().stream()
+                .map(s -> s.getName())
+                .forEach(System.out::println);
 
+        // Remove pet3 from owner4
+
+        pet3.removeOwner(owner4);
+
+        System.out.println("\nAfter pet addition/removal: \n");
+        owner4.getPets().stream()
+                .map(s -> s.getName())
+                .forEach(System.out::println);
     }
 
     private static void display(Object obj) {
@@ -124,4 +165,5 @@ public class PetClinicDriver {
 
         System.out.println();
     }
+
 }

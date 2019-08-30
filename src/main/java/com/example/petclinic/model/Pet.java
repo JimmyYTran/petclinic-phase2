@@ -1,6 +1,8 @@
 package com.example.petclinic.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Pet implements Modifiable {
@@ -9,6 +11,8 @@ public class Pet implements Modifiable {
     private String name;
     private Date birthDate;
     private PetType petType;
+    private Owner owner;
+    private List<Visit> visits;
 
     public Pet() {
 
@@ -24,6 +28,8 @@ public class Pet implements Modifiable {
         this.name = name;
         this.birthDate = birthDate;
         this.petType = petType;
+        this.owner = new Owner();
+        this.visits = new ArrayList<>();
     }
 
     @Override
@@ -57,6 +63,50 @@ public class Pet implements Modifiable {
 
     public void setPetType(PetType petType) {
         this.petType = petType;
+    }
+
+    public void addOwner(Owner owner) {
+        addOwner(owner, true);
+    }
+
+    public void addOwner(Owner owner, boolean updateRelationship) {
+        this.owner = owner;
+        if (updateRelationship){
+            owner.addPet(this, false);
+        }
+    }
+
+    public void removeOwner(Owner owner) {
+        removeOwner(owner, true);
+    }
+
+    public void removeOwner(Owner owner, boolean updateRelationship) {
+        this.owner = null;
+        if (updateRelationship){
+            owner.removePet(this, false);
+        }
+    }
+
+    public void addVisit(Visit visit) {
+        addVisit(visit, true);
+    }
+
+    public void addVisit(Visit visit, boolean updateRelationship) {
+        visits.add(visit);
+        if (updateRelationship) {
+            visit.addPet(this, false);
+        }
+    }
+
+    public void removeVisit(Visit visit) {
+        addVisit(visit, true);
+    }
+
+    public void removeVisit(Visit visit, boolean updateRelationship) {
+        visits.remove(visit);
+        if (updateRelationship) {
+            visit.removePet(this, false);
+        }
     }
 
     // only include id field when generating equals and hashcode
